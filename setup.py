@@ -59,8 +59,8 @@ setup(name = 'zojax.portlets.onlinecounter',
                           'zojax.js.jquery',
                           'zojax.resource',
                           'zojax.resourcepackage',
+                          'zojax.jquery.jsonrpc',
                           ],
-      extras_require = dict(test=['zojax.portlet [test]']),
       include_package_data = True,
       zip_safe = False
       )

@@ -1,0 +1,21 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:i18n="http://namespaces.zope.org/i18n"
+   xmlns:zojax="http://namespaces.zope.org/zojax"
+   i18n_domain="zojax.authentication">
+
+  <!-- report's levels status portlet -->
+  <zojax:portlet
+     name="portlet.online_users"
+     title="Online users"
+     class=".online_users.OnlineUsersPortlet"
+     schema=".interfaces.IOnlineUsersPortlet" 
+     />
+
+  <zojax:pagelet
+     type="portlet.view"
+     template="online_users.pt"
+     for=".interfaces.IOnlineUsersPortlet" 
+     />
+     
+</configure>

@@ -1,0 +1,5 @@
+<div class="z-portlet portlet-report-level-status" i18n:domain="zojax.quick.contenttypes">
+  <h2 class="z-portlet-header" i18n:translate="">
+    <tal:block content="context/title" /> - <span id="online_number"></span>
+  </h2>
+</div>

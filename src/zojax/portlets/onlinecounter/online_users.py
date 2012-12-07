@@ -21,32 +21,34 @@ class OnlineUsersPortlet(object):
         includeInplaceSource("<script type='text/javascript'>$(document).ready(makeOnline());$('#online_number').ready(getOnlineNumber('online_number'));</script>")
         return super(OnlineUsersPortlet, self).render()
 
-    def format_date(self, date):
-        new_date = str(date.day) + '.' + str(date.month) + '.' + str(date.year) + ' ' + str(date.hour)+ ':'
-        if len(str(date.minute))==1:
-            new_date += '0' + str(date.minute)
-        else:
-            new_date += str(date.minute)
+    def format_date(self, date, time):
+        new_date = str(date.day) + '.' + str(date.month) + '.' + str(date.year)
+        if time == True:
+            new_date += '  ' + str(date.hour)+ ':'
+            if len(str(date.minute))==1:
+                new_date += '0' + str(date.minute)
+            else:
+                new_date += str(date.minute)
         return new_date
 
     def update(self):
         site = getSite()
-        max_online = "Max online - "
-        max_logged = "Max logged - "
+        self.max_online = "Maximum simultaneous :"
+        self.max_logged = "Maximum for a day :"
         try:
             max_count = sorted(site['stats'].count_users_by_month, key=lambda x: x[0], reverse=True)[0]
-            self.stats_max_online = max_online + str(max_count[0]) + ' (' + self.format_date(max_count[1]) +')'
+            self.stats_max_online = str(max_count[0]) + ' -  ' + self.format_date(max_count[1], True)
             stats_max_logged = sorted(site['stats'].count_users_names, key=lambda x: x[0], reverse=True)[0]
-            self.stats_max_logged = max_logged + str(stats_max_logged[0]) + ' (' + self.format_date(stats_max_logged[1]) +')'
+            self.stats_max_logged = str(stats_max_logged[0]) + ' -  ' + self.format_date(stats_max_logged[1],False)
         except (IndexError,KeyError), e:
             try:
                 max_count = sorted(site['stats'].count_users_allday, key=lambda x: x[0], reverse=True)[0]
-                self.stats_max_online = max_online + str(max_count[0]) + ' (' + self.format_date(max_count[1]) +')'
+                self.stats_max_online = str(max_count[0]) + ' -  ' + self.format_date(max_count[1], True)
                 stats_max_logged = len(site['stats'].list_users_names)
-                self.stats_max_logged = max_logged + str(stats_max_logged) + ' (' + self.format_date(datetime.datetime.now()) +')'
+                self.stats_max_logged = str(stats_max_logged) + ' -  ' + self.format_date(datetime.datetime.now(), False)
             except (IndexError,KeyError, AttributeError), e:
-                self.stats_max_online = max_online + ' None'
-                self.stats_max_logged = max_logged + ' None'
+                self.stats_max_online = 'None'
+                self.stats_max_logged = 'None'
 
 class StatCounters(PersistentItem):
     interface.implements(IStatCounters)

@@ -2,6 +2,8 @@
     <h2 class="z-portlet-header" i18n:translate="">
         <tal:block content="context/title" /> - <span id="online_number"></span>
     </h2><br />
-    <h2 class="z-portlet-header" i18n:translate="" tal:content="context/stats_max_online"></h2><br /><br />
-    <h2 class="z-portlet-header" i18n:translate="" tal:content="context/stats_max_logged"></h2>
+    <h2 class="z-portlet-header" i18n:translate="" tal:content="context/max_online"></h2>
+    <h2 class="z-listing" i18n:translate="" tal:content="context/stats_max_online"></h2><br />
+    <h2 class="z-portlet-header" i18n:translate="" tal:content="context/max_logged"></h2>
+    <h2 class="z-listing" i18n:translate="" tal:content="context/stats_max_logged"></h2>
 </div>

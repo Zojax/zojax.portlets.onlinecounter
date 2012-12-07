@@ -17,5 +17,15 @@
      template="online_users.pt"
      for=".interfaces.IOnlineUsersPortlet" 
      />
-     
+
+  <!-- statistics counters -->
+  <zojax:content
+     title="statistics counters"
+     name="stat.counters"
+     description="Statistics counters for logged users"
+     schema=".interfaces.IStatCounters"
+     containers="zojax.portal.interfaces.IPortal"
+     class=".online_users.StatCounters"
+     permission="zope.View" />
+
 </configure>

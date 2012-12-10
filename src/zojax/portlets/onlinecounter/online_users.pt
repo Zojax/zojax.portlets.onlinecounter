@@ -1,9 +1,9 @@
 <div class="z-portlet portlet-report-level-status" i18n:domain="zojax.quick.contenttypes">
-    <h2 class="z-portlet-header" i18n:translate="">
-        <tal:block content="context/title" /> - <span id="online_number"></span>
+    <h2 class="z-portlet-header" i18n:translate="" style="text-transform:none">
+        <tal:block content="context/title" /> - <span id="online_number" ></span>
     </h2><br />
-    <h2 class="z-portlet-header" i18n:translate="" tal:content="context/max_online"></h2>
-    <h2 class="z-listing" i18n:translate="" tal:content="context/stats_max_online"></h2><br />
-    <h2 class="z-portlet-header" i18n:translate="" tal:content="context/max_logged"></h2>
-    <h2 class="z-listing" i18n:translate="" tal:content="context/stats_max_logged"></h2>
+    <h4 class="z-portlet-header" i18n:translate="" tal:content="context/max_online" style="text-transform:none"></h4>
+    <h2 class="z-listing" i18n:translate="" tal:content="context/stats_max_online" style="text-transform:none"></h2><br />
+    <h2 class="z-portlet-header" i18n:translate="" tal:content="context/max_logged" style="text-transform:none"></h2>
+    <h2 class="z-listing" i18n:translate="" tal:content="context/stats_max_logged" style="text-transform:none"></h2>
 </div>

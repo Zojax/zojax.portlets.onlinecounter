@@ -7,7 +7,7 @@
   <!-- report's levels status portlet -->
   <zojax:portlet
      name="portlet.online_users"
-     title="Online users"
+     title="Online Users"
      class=".online_users.OnlineUsersPortlet"
      schema=".interfaces.IOnlineUsersPortlet" 
      />

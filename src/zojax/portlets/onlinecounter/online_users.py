@@ -22,9 +22,10 @@ class OnlineUsersPortlet(object):
         return super(OnlineUsersPortlet, self).render()
 
     def format_date(self, date, time):
-        new_date = str(date.day) + '.' + str(date.month) + '.' + str(date.year)
+        months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+        new_date = " on " + months[date.month-1] + '. ' + str(date.day)
         if time == True:
-            new_date += '  ' + str(date.hour)+ ':'
+            new_date += ', ' + str(date.hour)+ ':'
             if len(str(date.minute))==1:
                 new_date += '0' + str(date.minute)
             else:
@@ -33,19 +34,28 @@ class OnlineUsersPortlet(object):
 
     def update(self):
         site = getSite()
-        self.max_online = "Maximum simultaneous :"
-        self.max_logged = "Maximum for a day :"
+        self.max_online = "Max Concurrent in Single Day :"  # "16 on Dec. 3"
+        self.max_logged = "Max Users in Single Day :"
         try:
-            max_count = sorted(site['stats'].count_users_by_month, key=lambda x: x[0], reverse=True)[0]
-            self.stats_max_online = str(max_count[0]) + ' -  ' + self.format_date(max_count[1], True)
+            max_online_count_users_by_month = sorted(site['stats'].count_users_by_month, key=lambda x: x[0], reverse=True)[0]
+            max_online_count_today = sorted(site['stats'].count_users_allday, key=lambda x: x[0], reverse=True)[0]
+            if max_online_count_today[0] >= max_online_count_users_by_month[0]:
+                self.stats_max_online = str(max_online_count_today[0]) + ' ' + self.format_date(max_online_count_today[1], True)
+            else:
+                self.stats_max_online = str(max_online_count_users_by_month[0]) + ' ' + self.format_date(max_online_count_users_by_month[1], True)
+
+            stats_max_logged_today = len(site['stats'].list_users_names)
             stats_max_logged = sorted(site['stats'].count_users_names, key=lambda x: x[0], reverse=True)[0]
-            self.stats_max_logged = str(stats_max_logged[0]) + ' -  ' + self.format_date(stats_max_logged[1],False)
+            if stats_max_logged_today >= stats_max_logged[0]:
+                self.stats_max_logged = str(stats_max_logged_today) + ' ' + self.format_date(datetime.datetime.now(), False)
+            else:
+                self.stats_max_logged = str(stats_max_logged[0]) + ' ' + self.format_date(stats_max_logged[1],False)
         except (IndexError,KeyError), e:
             try:
-                max_count = sorted(site['stats'].count_users_allday, key=lambda x: x[0], reverse=True)[0]
-                self.stats_max_online = str(max_count[0]) + ' -  ' + self.format_date(max_count[1], True)
-                stats_max_logged = len(site['stats'].list_users_names)
-                self.stats_max_logged = str(stats_max_logged) + ' -  ' + self.format_date(datetime.datetime.now(), False)
+                max_online_count_today = sorted(site['stats'].count_users_allday, key=lambda x: x[0], reverse=True)[0]
+                self.stats_max_online = str(max_online_count_today[0]) + ' ' + self.format_date(max_online_count_today[1], True)
+                stats_max_logged_today = len(site['stats'].list_users_names)
+                self.stats_max_logged = str(stats_max_logged_today) + ' ' + self.format_date(datetime.datetime.now(), False)
             except (IndexError,KeyError, AttributeError), e:
                 self.stats_max_online = 'None'
                 self.stats_max_logged = 'None'

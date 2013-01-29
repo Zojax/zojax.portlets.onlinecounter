@@ -11,6 +11,8 @@ from zope.component import getUtility, queryMultiAdapter
 from zope.app.intid.interfaces import IIntIds
 from zope.app.component.hooks import getSite
 
+from interfaces import IVisitCount
+
 
 class OnlineUsersPortlet(object):
 
@@ -60,6 +62,7 @@ class OnlineUsersPortlet(object):
                 self.stats_max_online = 'None'
                 self.stats_max_logged = 'None'
 
+
 class StatCounters(PersistentItem):
     interface.implements(IStatCounters)
     count_users_online_now = FieldProperty(IStatCounters['count_users_online_now'])
@@ -71,3 +74,22 @@ class StatCounters(PersistentItem):
     @property
     def id(self):
         return getUtility(IIntIds).getId(self)
+
+
+class VisitCount(object):
+    interface.implements(IVisitCount)
+
+    def __init__(self, context):
+        self.context = context
+
+    def drop_counter(self):
+        context.visitors_number = 0
+
+    def inc_counter(self):
+        context.visitors_number = context.visitors_number + 1
+
+    def add_user(self, user):
+        context.visitors_list.append(user);
+
+    def get_users(self):
+        return context.visitors_list

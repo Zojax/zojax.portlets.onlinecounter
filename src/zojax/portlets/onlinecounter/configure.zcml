@@ -4,6 +4,9 @@
    xmlns:zojax="http://namespaces.zope.org/zojax"
    i18n_domain="zojax.authentication">
 
+  <!-- visitor statisitc workspace declaration -->
+  <include file="workspace.zcml" />
+
   <!-- report's levels status portlet -->
   <zojax:portlet
      name="portlet.online_users"
@@ -28,4 +31,15 @@
      class=".online_users.StatCounters"
      permission="zope.View" />
 
+
+    <class class="zojax.content.space.content.ContentSpace">
+      <implements interface=".interfaces.IVisitCountable" />
+    </class>
+
+    <adapter
+       name="zojax.content.visit_statistic"
+       for=".interfaces.IVisitCountable"
+       provides=".interfaces.IVisitCount"
+       factory=".online_users.VisitCount"
+       />
 </configure>

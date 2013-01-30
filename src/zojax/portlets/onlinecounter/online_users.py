@@ -11,7 +11,7 @@ from zope.component import getUtility, queryMultiAdapter
 from zope.app.intid.interfaces import IIntIds
 from zope.app.component.hooks import getSite
 
-from interfaces import IVisitCount
+from interfaces import _, IVisitCount
 
 
 class OnlineUsersPortlet(object):
@@ -75,6 +75,9 @@ class StatCounters(PersistentItem):
     def id(self):
         return getUtility(IIntIds).getId(self)
 
+    @property
+    def title(self):
+        return _(u'Statisitcs Counter')
 
 class VisitCount(object):
     interface.implements(IVisitCount)

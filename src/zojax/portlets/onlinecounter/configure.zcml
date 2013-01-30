@@ -4,9 +4,6 @@
    xmlns:zojax="http://namespaces.zope.org/zojax"
    i18n_domain="zojax.authentication">
 
-  <!-- visitor statisitc workspace declaration -->
-  <include file="workspace.zcml" />
-
   <!-- report's levels status portlet -->
   <zojax:portlet
      name="portlet.online_users"

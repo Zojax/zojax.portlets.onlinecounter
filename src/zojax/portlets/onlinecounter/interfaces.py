@@ -41,11 +41,3 @@ class IVisitCount(interface.Interface):
 
 class IVisitCountable(interface.Interface):
     """ Allows classes to be adapted for getting visit-counter feature """
-
-
-class IVisitorsViewWorkspace(IItem, IWorkspace):
-    """ VisitorsView workspace """
-
-
-class IVisitorsViewWorkspaceFactory(IWorkspaceFactory):
-    """ VisitorsView workspace factory """

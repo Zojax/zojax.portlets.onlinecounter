@@ -16,8 +16,12 @@ from interfaces import _, IVisitCount
 
 class OnlineUsersPortlet(object):
 
+    def __init__(self, context, request, manager, view):
+        self.site = getSite()
+        super(OnlineUsersPortlet, self).__init__(context, request, manager, view)
+
     def isAvailable(self):
-        return not IUnauthenticatedPrincipal.providedBy(self.request.principal) 
+        return not IUnauthenticatedPrincipal.providedBy(self.request.principal)
     
     def render(self):
         includeInplaceSource("<script type='text/javascript'>$(document).ready(makeOnline());$('#online_number').ready(getOnlineNumber('online_number'));</script>")
@@ -35,28 +39,28 @@ class OnlineUsersPortlet(object):
         return new_date
 
     def update(self):
-        site = getSite()
+        #self.site_url = absoluteURL(site, request)
         self.max_online = "Max Concurrent in Single Day :"  # "16 on Dec. 3"
         self.max_logged = "Max Users in Single Day :"
         try:
-            max_online_count_users_by_month = sorted(site['stats'].count_users_by_month, key=lambda x: x[0], reverse=True)[0]
-            max_online_count_today = sorted(site['stats'].count_users_allday, key=lambda x: x[0], reverse=True)[0]
+            max_online_count_users_by_month = sorted(self.site['stats'].count_users_by_month, key=lambda x: x[0], reverse=True)[0]
+            max_online_count_today = sorted(self.site['stats'].count_users_allday, key=lambda x: x[0], reverse=True)[0]
             if max_online_count_today[0] >= max_online_count_users_by_month[0]:
                 self.stats_max_online = str(max_online_count_today[0]) + ' ' + self.format_date(max_online_count_today[1], True)
             else:
                 self.stats_max_online = str(max_online_count_users_by_month[0]) + ' ' + self.format_date(max_online_count_users_by_month[1], True)
 
-            stats_max_logged_today = len(site['stats'].list_users_names)
-            stats_max_logged = sorted(site['stats'].count_users_names, key=lambda x: x[0], reverse=True)[0]
+            stats_max_logged_today = len(self.site['stats'].list_users_names)
+            stats_max_logged = sorted(self.site['stats'].count_users_names, key=lambda x: x[0], reverse=True)[0]
             if stats_max_logged_today >= stats_max_logged[0]:
                 self.stats_max_logged = str(stats_max_logged_today) + ' ' + self.format_date(datetime.datetime.now(), False)
             else:
                 self.stats_max_logged = str(stats_max_logged[0]) + ' ' + self.format_date(stats_max_logged[1],False)
         except (IndexError,KeyError), e:
             try:
-                max_online_count_today = sorted(site['stats'].count_users_allday, key=lambda x: x[0], reverse=True)[0]
+                max_online_count_today = sorted(self.site['stats'].count_users_allday, key=lambda x: x[0], reverse=True)[0]
                 self.stats_max_online = str(max_online_count_today[0]) + ' ' + self.format_date(max_online_count_today[1], True)
-                stats_max_logged_today = len(site['stats'].list_users_names)
+                stats_max_logged_today = len(self.site['stats'].list_users_names)
                 self.stats_max_logged = str(stats_max_logged_today) + ' ' + self.format_date(datetime.datetime.now(), False)
             except (IndexError,KeyError, AttributeError), e:
                 self.stats_max_online = 'None'
@@ -78,6 +82,7 @@ class StatCounters(PersistentItem):
     @property
     def title(self):
         return _(u'Statisitcs Counter')
+
 
 class VisitCount(object):
     interface.implements(IVisitCount)
